@@ -1,9 +1,8 @@
-// image import
 import HeroImage from "../../assets/hero-image.jpg";
 
 function HeroSection() {
   return (
-    <div className="hero-container md:h-[300px] ">
+    <div className="hero-container w-full sm:h-[200px] md:h-[300px] lg:h-[400px]">
       <img
         src={HeroImage}
         className="w-full h-full object-cover"

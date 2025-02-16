@@ -6,136 +6,143 @@ import { PiListBulletsBold } from "react-icons/pi";
 import { FaBicycle, FaSearch } from "react-icons/fa";
 import Companydetails from "../companydetails";
 
+// Menu Modal Component
+// Menu Modal Component
+// Menu Modal Component
 function MenuModal({ menuItems, onClose, onSelectCategory }) {
-  if (!Array.isArray(menuItems)) {
-    return <div>Invalid menu data!</div>;
-  }
-
   return (
-    <div className="fixed inset-0 flex justify-center items-center z-50">
-      <div className="bg-white p-5 rounded-lg max-w-lg w-full">
-        <div className="flex justify-between items-center">
-          <h2 className="text-xl font-bold">Menu Items</h2>
-          <button onClick={onClose} className="text-red-500 text-xl font-bold">
-            X
+    <div className="fixed inset-0 flex justify-center items-center z-50  px-4">
+      <div className="bg-white p-6 rounded-lg w-full max-w-xl shadow-xl overflow-y-auto max-h-[80vh]">
+        <div className="flex justify-between items-center border-b pb-3">
+          <h2 className="text-lg font-bold">Menu Items</h2>
+          <button
+            onClick={onClose}
+            className="text-red-500 text-xl font-bold p-2 rounded hover:bg-red-100"
+          >
+            ✖
           </button>
         </div>
-        <div className="mt-4">
-          <ul className="list-disc pl-5">
-            {menuItems.map((item, index) => (
-              <li
-                key={index}
-                className="text-lg cursor-pointer  hover:bg-black hover:text-white"
-                onClick={() => {
-                  onSelectCategory(item); // Select the category
-                  onClose(); // Close the modal
-                }}
-              >
-                {item}
-              </li>
-            ))}
-          </ul>
-        </div>
+        <ul className="mt-4 space-y-2 max-h-[60vh] overflow-y-auto">
+          {menuItems.map((item, index) => (
+            <li
+              key={index}
+              className="text-lg cursor-pointer p-3 hover:bg-black hover:text-white rounded-md transition"
+              onClick={() => {
+                onSelectCategory(item);
+                onClose();
+              }}
+            >
+              {item}
+            </li>
+          ))}
+        </ul>
       </div>
     </div>
   );
 }
 
+// Main Products List Component
 function ProductsList() {
-  const [activeCategory, setActiveCategory] = useState("Pizze Rosse");
-  const [isModalOpen, setIsModalOpen] = useState(false); // Modal state
+  const [activeCategory, setActiveCategory] = useState(
+    menuItems[0] || "Pizze Rosse"
+  );
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const categoryRefs = useRef({});
 
   const handleCategoryClick = (category) => {
     setActiveCategory(category);
     if (categoryRefs.current[category]) {
-      categoryRefs.current[category].scrollIntoView({ behavior: "smooth" });
+      categoryRefs.current[category].scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
     }
   };
 
-  const handleModalToggle = () => {
-    setIsModalOpen(!isModalOpen); // Toggle the modal
-  };
-
-  const handleSelectCategory = (category) => {
-    handleCategoryClick(category); // Select the category when an item is clicked
-  };
-
   return (
-    <div className="products-list container pt-5 mt-3">
+    <div className="container mx-auto px-4 pt-5 mt-3">
       {/* Header */}
-      <div className="mt-2 flex flex-row justify-between">
-        <h1 className="text-3xl font-[700] mt">Azzipizza Mica Pizza e Fichi</h1>
-        <div className="flex flex-row justify-center gap-2">
-          <div className="w-48 h-12 bg-transparent hover:bg-gray-300 rounded-4xl flex flex-row justify-center gap-2 items-center transition duration-300">
-            <MdGroups size={24} className="text-orange-500" />
-            <h2 className="text-[19px] font-[600]">Ordini di gruppo</h2>
-          </div>
-          <div className="w-12 h-12 bg-transparent hover:bg-gray-300 rounded-4xl flex flex-row justify-center items-center transition duration-300">
-            <MdInfoOutline size={26} />
-          </div>
+      <div className="flex flex-col sm:flex-row justify-between items-center">
+        <h1 className="text-xl sm:text-2xl font-bold text-center sm:text-left">
+          Azzipizza Mica Pizza e Fichi
+        </h1>
+        <div className="flex gap-3 mt-3 sm:mt-0">
+          <button className="flex items-center gap-2 px-3 sm:px-4 py-2 bg-transparent hover:bg-gray-300 rounded-lg transition text-sm sm:text-base">
+            <MdGroups size={22} className="text-orange-500" />
+            <span>Ordini di gruppo</span>
+          </button>
+          <button className="p-2 bg-transparent hover:bg-gray-300 rounded-lg transition">
+            <MdInfoOutline size={24} />
+          </button>
         </div>
       </div>
 
       {/* Rating & Delivery */}
-      <div className="flex flex-row items-center gap-5 mt-3">
-        <div className="gap-1.5 flex flex-row items-center">
-          <MdStarOutline size={24} className="text-amber-500" />
-          <p>0 Recensioni</p>
+      <div className="flex flex-wrap items-center gap-4 mt-3">
+        <div className="flex items-center gap-2">
+          <MdStarOutline size={22} className="text-amber-500" />
+          <p className="text-sm">0 Recensioni</p>
         </div>
-        <div className="w-22 h-8 rounded-[5px] bg-amber-600 flex flex-row justify-evenly items-center text-white">
-          <FaBicycle size={24} />
+        <div className="flex items-center gap-2 bg-amber-600 text-white px-3 py-1 rounded-md">
+          <FaBicycle size={18} />
           <p>Gratis</p>
         </div>
       </div>
 
       {/* Search Bar */}
-      <div className="flex items-center border border-gray-300 rounded-3xl h-12 p-2 mt-5 hover:border-4 hover:border-sky-500">
-        <FaSearch size={20} className="text-orange-500 ml-3 mr-3" />
+      <div className="relative mt-5">
+        <FaSearch
+          size={18}
+          className="absolute left-3 top-1/2 transform -translate-y-1/2 text-orange-500"
+        />
         <input
           type="text"
           placeholder="Cerca il prodotto..."
-          className="outline-none w-full text-gray-700"
+          className="pl-10 pr-3 py-2 w-full border rounded-3xl focus:ring-2 focus:ring-sky-500 text-sm sm:text-base"
         />
       </div>
 
-      {/* Menu Items */}
-      <div className="flex flex-row justify-between items-center mt-5">
-        <div className="flex gap-1">
+      {/* Menu Items (Scrollable on Mobile) */}
+      <div className="flex items-center justify-between mt-5">
+        <div className="flex overflow-x-auto gap-2 w-full hide-scrollbar whitespace-nowrap">
           {menuItems.map((item) => (
-            <div
+            <button
               key={item}
-              className={`p-2 px-4 font-bold cursor-pointer transition duration-300 ${
+              className={`px-5 py-1 font-semibold text-sm sm:text-base transition rounded-md ${
                 activeCategory === item
-                  ? "bg-black text-white rounded-2xl"
-                  : "text-black hover:bg-black hover:text-white hover:rounded-2xl"
+                  ? "bg-black text-white"
+                  : "text-black hover:bg-black hover:text-white"
               }`}
               onClick={() => handleCategoryClick(item)}
             >
               {item}
-            </div>
+            </button>
           ))}
         </div>
-        <div
-          className="w-12 h-12 bg-gray-200 hover:bg-gray-300 rounded-[5px] flex flex-row justify-center items-center transition duration-300 cursor-pointer"
-          onClick={handleModalToggle} // Open modal on click
+        <button
+          className="w-20 h-10 flex items-center justify-center bg-gray-200 hover:bg-gray-300 rounded-md transition ml-2"
+          onClick={() => setIsModalOpen(true)}
         >
-          <PiListBulletsBold size={25} />
-        </div>
+          <PiListBulletsBold size={22} />
+        </button>
       </div>
 
-      {/* Products by Category */}
+      {/* Product Categories & Listing */}
       {menuItems.map((category) => (
-        <div key={category} ref={(el) => (categoryRefs.current[category] = el)}>
-          <h1 className="text-xl font-[600] mt-6">{category}</h1>
-          {listing[category].length > 0 ? (
-            <div className="flex flex-col gap-4 mt-4">
+        <div
+          key={category}
+          ref={(el) => (categoryRefs.current[category] = el)}
+          className="mt-6"
+        >
+          <h2 className="text-lg sm:text-xl font-semibold">{category}</h2>
+          {listing[category]?.length > 0 ? (
+            <div className="grid grid-cols-1 gap-4 mt-4">
               {listing[category].map((item) => (
                 <ProductCard key={item.id} products={item} />
               ))}
             </div>
           ) : (
-            <p className="text-sm font-light text-gray-500 mt-2">
+            <p className="text-sm text-gray-500 mt-2">
               No items available in this category.
             </p>
           )}
@@ -148,8 +155,8 @@ function ProductsList() {
       {isModalOpen && (
         <MenuModal
           menuItems={menuItems}
-          onClose={handleModalToggle} // Close the modal
-          onSelectCategory={handleSelectCategory} // Pass select functionality
+          onClose={() => setIsModalOpen(false)}
+          onSelectCategory={handleCategoryClick}
         />
       )}
     </div>
